@@ -58,10 +58,10 @@ export default {
       fetch(`http://worldtimeapi.org/api/timezone/${selectedArea}`)
         .then((res) => res.json())
         .then((response) => {
-          const dateTime = new Date(response.utc_datetime);
-          console.log(dateTime);
-          this.time = `${dateTime.getHours()} : ${dateTime.getMinutes()}`;
-          this.time_computer_language = dateTime;
+          const regex = /T|\\:\d\dZ/g;
+          const dateString = response.utc_datetime.replace(regex, ' ');
+          this.time = dateString;
+          this.time_computer_language = response.utc_datetime;
         });
     },
     onChangeLocation(e) {
