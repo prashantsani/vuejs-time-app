@@ -21,9 +21,10 @@
             </option>
         </select>
       </fieldset>
-      <p class="text-success h4">
-        <time v-bind:datetime="time_computer_language">{{time}}</time>
-      </p>
+      <div id="clock">
+          <p class="date">{{ date }}</p>
+          <p class="time">{{ time }}</p>
+      </div>
   </div>
 </template>
 
@@ -38,6 +39,8 @@ export default {
       selectedLocation: 0,
       time: 'Please Select Area',
       time_computer_language: '',
+      date: 'Please Select Area',
+      week: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
     };
   },
   mounted() {
@@ -46,6 +49,13 @@ export default {
       .then((response) => { this.areas = response; });
   },
   methods: {
+    zeroPadding(num, digit) {
+      let zero = '';
+      for (let i = 0; i < digit; i += 1) {
+        zero += '0';
+      }
+      return (zero + num).slice(-digit);
+    },
     onChangeArea(e) {
       const selectedArea = e.target.value;
       this.locations = [];
@@ -58,10 +68,19 @@ export default {
       fetch(`http://worldtimeapi.org/api/timezone/${selectedArea}`)
         .then((res) => res.json())
         .then((response) => {
-          const regex = /T|:\d\dZ/ig;
-          const dateString = response.utc_datetime.replace(regex, ' ');
-          this.time = dateString;
-          this.time_computer_language = response.utc_datetime;
+          console.log(response);
+          const time = new Date(response.utc_datetime).toLocaleString('en-US', { timeZone: this.selectedArea });
+
+          this.date = time.substring(0, time.indexOf(', '));
+          this.time = time.substr(time.indexOf(', ')).replace(', ', '');
+
+          // Ideally it should be sent as a Date() object,
+          // But unfortunately Date() converts to LOCAL Date() object
+
+          // eslint-disable-next-line max-len
+          // this.time = `${zeroPadding(cd.getHours(), 2)} : ${zeroPadding(cd.getMinutes(), 2)} : ${zeroPadding(cd.getSeconds(), 2)}`;
+          // eslint-disable-next-line max-len
+          // this.date = `${zeroPadding(cd.getFullYear(), 4)} - ${zeroPadding(cd.getMonth() + 1, 2)} - ${zeroPadding(cd.getDate(), 2)} ${this.week[cd.getDay()]}`;
         });
     },
     onChangeLocation(e) {
@@ -71,6 +90,39 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style>
+html,body {
+    height: 100%;
+}
+body {
+    background: #0f3854;
+    background: radial-gradient(ellipse at center,  #0a2e38  0%, #000000 70%);
+    background-size: 100%;
+}
+p {
+    margin: 0;
+    padding: 0;
+}
+#clock {
+    font-family: 'Share Tech Mono', monospace;
+    color: #ffffff;
+    text-align: center;
+    transform: scale(0.8);
+    color: #daf6ff;
+    text-shadow: 0 0 20px rgba(10, 175, 230, 1),  0 0 20px rgba(10, 175, 230, 0);
+}
+#clock .time {
+        letter-spacing: 0.05em;
+        font-size: 80px;
+        padding: 5px 0;
+    }
+#clock    .date {
+        letter-spacing: 0.1em;
+        font-size: 24px;
+    }
+#clock    .text {
+        letter-spacing: 0.1em;
+        font-size: 12px;
+        padding: 20px 0 0;
+    }
 </style>
