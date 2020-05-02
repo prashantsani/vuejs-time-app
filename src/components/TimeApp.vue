@@ -62,13 +62,11 @@ export default {
       this.selectedArea = selectedArea;
       this.time = 'Loading';
       this.time_computer_language = '';
-      console.log(selectedArea);
 
 
       fetch(`http://worldtimeapi.org/api/timezone/${selectedArea}`)
         .then((res) => res.json())
         .then((response) => {
-          console.log(response);
           const time = new Date(response.utc_datetime).toLocaleString('en-US', { timeZone: this.selectedArea });
 
           this.date = time.substring(0, time.indexOf(', '));
@@ -83,8 +81,7 @@ export default {
           // this.date = `${zeroPadding(cd.getFullYear(), 4)} - ${zeroPadding(cd.getMonth() + 1, 2)} - ${zeroPadding(cd.getDate(), 2)} ${this.week[cd.getDay()]}`;
         });
     },
-    onChangeLocation(e) {
-      console.log(e.target.value);
+    onChangeLocation() {
     },
   },
 };
