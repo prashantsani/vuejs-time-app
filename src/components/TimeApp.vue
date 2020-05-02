@@ -58,7 +58,7 @@ export default {
       fetch(`http://worldtimeapi.org/api/timezone/${selectedArea}`)
         .then((res) => res.json())
         .then((response) => {
-          const regex = /T|\\:\d\dZ/g;
+          const regex = /T|:\d\dZ/ig;
           const dateString = response.utc_datetime.replace(regex, ' ');
           this.time = dateString;
           this.time_computer_language = response.utc_datetime;
