@@ -36,34 +36,41 @@ export default {
       locations: [],
       selectedArea: 0,
       selectedLocation: 0,
-      time: '20:00',
-      time_computer_language: '20:00',
+      time: 'Please Select Area',
+      time_computer_language: '',
     };
   },
   mounted() {
     fetch('http://worldtimeapi.org/api/timezone')
       .then((res) => res.json())
-      .then((response) => { console.log(response); return response; })
       .then((response) => { this.areas = response; });
+  },
+  methods: {
+    onChangeArea(e) {
+      const selectedArea = e.target.value;
+      this.locations = [];
+      this.selectedArea = selectedArea;
+      this.time = 'Loading';
+      this.time_computer_language = '';
+      console.log(selectedArea);
 
-    this.locations = ['Europe/Amsterdam', 'Europe/Andorra', 'Europe/Astrakhan',
-      'Europe/Athens', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Brussels', 'Europe/Bucharest',
-      'Europe/Budapest', 'Europe/Chisinau', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Gibraltar',
-      'Europe/Helsinki', 'Europe/Istanbul'];
-  },
-  onChangeArea() {
-    console.log('Area Changed');
-  },
-  onChangeLocation() {
-    console.log('location Changed');
+
+      fetch(`http://worldtimeapi.org/api/timezone/${selectedArea}`)
+        .then((res) => res.json())
+        .then((response) => {
+          const dateTime = new Date(response.utc_datetime);
+          console.log(dateTime);
+          this.time = `${dateTime.getHours()} : ${dateTime.getMinutes()}`;
+          this.time_computer_language = dateTime;
+        });
+    },
+    onChangeLocation(e) {
+      console.log(e.target.value);
+    },
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-a {
-  color: #42b983;
-}
 </style>
