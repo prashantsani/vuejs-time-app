@@ -41,7 +41,11 @@ export default {
     };
   },
   mounted() {
-    this.areas = ['Africa/Abidjan', 'Africa/Accra', 'Africa/Algiers', 'Africa/Bissau', 'Africa/Cairo'];
+    fetch('http://worldtimeapi.org/api/timezone')
+      .then((res) => res.json())
+      .then((response) => { console.log(response); return response; })
+      .then((response) => { this.areas = response; });
+
     this.locations = ['Europe/Amsterdam', 'Europe/Andorra', 'Europe/Astrakhan',
       'Europe/Athens', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Brussels', 'Europe/Bucharest',
       'Europe/Budapest', 'Europe/Chisinau', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Gibraltar',
