@@ -3,7 +3,7 @@
       <h1>Time App in VueJS</h1>
       <fieldset class="my-3">
         <label for="user-select-area" class="mr-2">Area</label>
-          <select v-model="selectedArea" @change="onChangeArea"
+          <select @change="onChangeArea"
               name="user-select-area" id="user-select-area" tabindex="1">
               <option selected disabled value="">Please select Area</option>
               <option v-for="area in areas" :key="area" v-bind:value="area">
@@ -15,7 +15,7 @@
         <label for="user-select-area" class="mr-2">Location</label>
         <select v-model="selectedLocation" @change="onChangeLocation"
             name="user-select-location" id="user-select-location" tabindex="2">
-            <option selected disabled value="">Please select Location</option>
+            <option selected disabled value="selectLocation">Please select Location</option>
             <option v-for="location in locations" :key="location" v-bind:value="location">
               {{location}}
             </option>
@@ -34,20 +34,23 @@ export default {
   data() {
     return {
       allLocations: [],
-      temp1: new Map(),
+      areaLocationMap: new Map(),
       tempMAP: [],
       areas: [],
       locations: [],
       selectedArea: 0,
       selectedLocation: 0,
-      time: 'Please Select Area',
+      time: 'Select Area',
       time_computer_language: '',
-      date: 'Please Select Area',
+      date: 'Please',
       week: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
+      timeZone: '',
+      api: 'http://worldtimeapi.org/api/timezone',
     };
   },
   mounted() {
-    fetch('http://worldtimeapi.org/api/timezone')
+    console.log('dasjkdas');
+    fetch(this.api)
       .then((res) => res.json())
       .then((response) => {
         this.allLocations = response;
@@ -58,21 +61,26 @@ export default {
 
           if (area === '') { area = item; location = item; }
 
-          if (!this.temp1.has(area)) {
-            this.temp1.set(area, []);
+          if (!this.areaLocationMap.has(area)) {
+            this.areaLocationMap.set(area, []);
           }
 
-          this.temp1.get(area).push(location);
-          // console.log(this.temp1.get(area));
+          this.areaLocationMap.get(area).push(location);
 
           return false;
         });
 
-        window.abc = this.temp1;
-        this.areas = this.temp1.keys();
+        window.abc = this.areaLocationMap;
+        this.setAreas(Array.from(this.areaLocationMap.keys()));
       });
   },
   methods: {
+    getAreas() {
+      return this.areas;
+    },
+    setAreas(value) {
+      this.areas = value;
+    },
     zeroPadding(num, digit) {
       let zero = '';
       for (let i = 0; i < digit; i += 1) {
@@ -82,16 +90,38 @@ export default {
     },
     onChangeArea(e) {
       const selectedArea = e.target.value;
-      this.locations = [];
+      this.locations = Array.from(this.areaLocationMap.get(selectedArea));
       this.selectedArea = selectedArea;
+    },
+    onChangeLocation(e) {
+      e.preventDefault();
+
       this.time = 'Loading';
       this.time_computer_language = '';
 
+      if (e.target.value === '' || e.target.value === 'selectLocation') { return false; }
 
-      fetch(`http://worldtimeapi.org/api/timezone/${selectedArea}`)
+      const location = e.target.value;
+      this.selectedLocation = location;
+      this.timeZone = (() => {
+        if (this.selectedLocation === this.selectedArea) {
+          return `${this.selectedArea}`;
+        }
+        return `${this.selectedArea}/${this.selectedLocation}`;
+      })();
+
+      const url = `${this.api}/${this.timeZone}`;
+
+      fetch(url)
         .then((res) => res.json())
         .then((response) => {
-          const time = new Date(response.utc_datetime).toLocaleString('en-US', { timeZone: this.selectedArea });
+          console.log(response);
+
+          if (typeof response !== 'string') {
+            this.time = 'Error ';
+          }
+
+          const time = new Date(response.utc_datetime).toLocaleString('en-US', { timeZone: this.timeZone });
 
           this.date = time.substring(0, time.indexOf(', '));
           this.time = time.substr(time.indexOf(', ')).replace(', ', '');
@@ -103,9 +133,12 @@ export default {
           // this.time = `${zeroPadding(cd.getHours(), 2)} : ${zeroPadding(cd.getMinutes(), 2)} : ${zeroPadding(cd.getSeconds(), 2)}`;
           // eslint-disable-next-line max-len
           // this.date = `${zeroPadding(cd.getFullYear(), 4)} - ${zeroPadding(cd.getMonth() + 1, 2)} - ${zeroPadding(cd.getDate(), 2)} ${this.week[cd.getDay()]}`;
+        })
+        .catch((error) => {
+          console.log(error);
         });
-    },
-    onChangeLocation() {
+
+      return false;
     },
   },
 };
