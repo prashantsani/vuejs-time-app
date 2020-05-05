@@ -33,6 +33,9 @@ export default {
   name: 'TimeApp',
   data() {
     return {
+      allLocations: [],
+      temp1: new Map(),
+      tempMAP: [],
       areas: [],
       locations: [],
       selectedArea: 0,
@@ -46,7 +49,28 @@ export default {
   mounted() {
     fetch('http://worldtimeapi.org/api/timezone')
       .then((res) => res.json())
-      .then((response) => { this.areas = response; });
+      .then((response) => {
+        this.allLocations = response;
+
+        this.tempMAP = this.allLocations.map((item) => {
+          let area = item.substring(0, item.indexOf('/'));
+          let location = item.substring(item.indexOf('/') + 1, item.length);
+
+          if (area === '') { area = item; location = item; }
+
+          if (!this.temp1.has(area)) {
+            this.temp1.set(area, []);
+          }
+
+          this.temp1.get(area).push(location);
+          // console.log(this.temp1.get(area));
+
+          return false;
+        });
+
+        window.abc = this.temp1;
+        this.areas = this.temp1.keys();
+      });
   },
   methods: {
     zeroPadding(num, digit) {
