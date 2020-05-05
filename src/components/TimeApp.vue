@@ -37,8 +37,8 @@ export default {
       areaLocationMap: new Map(), // Using JavaScript's Map() object to map all Areas/Location
       areas: [], // All Areas Available binded to <select>
       locations: [], // All Locations in that area available {Dynamic}; binded to <select>
-      selectedArea: 0, // {String} Value of Selected Area
-      selectedLocation: 0, // {String} Value of Selected Location
+      selectedArea: null, // {String} Value of Selected Area
+      selectedLocation: null, // {String} Value of Selected Location
       time: 'Select Area', // The Time shown inside <p>
       date: 'Please', // The Date shown inside <p>
       week: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'], // All available Days of Week
