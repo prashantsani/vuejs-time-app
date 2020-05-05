@@ -122,14 +122,6 @@ export default {
 
           this.date = time.substring(0, time.indexOf(', '));
           this.time = time.substr(time.indexOf(', ')).replace(', ', '');
-
-          // Ideally it should be sent as a Date() object,
-          // But unfortunately Date() converts to LOCAL Date() object
-
-          // eslint-disable-next-line max-len
-          // this.time = `${zeroPadding(cd.getHours(), 2)} : ${zeroPadding(cd.getMinutes(), 2)} : ${zeroPadding(cd.getSeconds(), 2)}`;
-          // eslint-disable-next-line max-len
-          // this.date = `${zeroPadding(cd.getFullYear(), 4)} - ${zeroPadding(cd.getMonth() + 1, 2)} - ${zeroPadding(cd.getDate(), 2)} ${this.week[cd.getDay()]}`;
         })
         .catch((error) => {
           console.log(error);
