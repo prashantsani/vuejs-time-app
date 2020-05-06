@@ -52,4 +52,10 @@ body {
 h1{
   font-size: 4.209rem;
 }
+#app{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-70%);
+}
 </style>

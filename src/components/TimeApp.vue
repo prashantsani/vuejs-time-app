@@ -1,26 +1,28 @@
 <template>
   <div class="hello">
       <h1 class="text-center">Time App in VueJS</h1>
-      <fieldset class="my-3">
-        <label for="user-select-area" class="mr-2">Area</label>
-          <select @change="onChangeArea"
-              name="user-select-area" id="user-select-area" tabindex="1">
-              <option selected disabled value="">Please select Area</option>
-              <option v-for="area in areas" :key="area" v-bind:value="area">
-                {{area}}
+      <form @submit="() => { return false }" class="selectTime">
+        <fieldset class="my-3">
+          <label for="user-select-area" class="mr-2">Area</label>
+            <select @change="onChangeArea"
+                name="user-select-area" id="user-select-area" tabindex="1">
+                <option selected disabled value="">Please select Area</option>
+                <option v-for="area in areas" :key="area" v-bind:value="area">
+                  {{area}}
+                </option>
+            </select>
+        </fieldset>
+        <fieldset class="my-3">
+          <label for="user-select-area" class="mr-2">Location</label>
+          <select v-model="selectedLocation" @change="onChangeLocation"
+              name="user-select-location" id="user-select-location" tabindex="2">
+              <option selected disabled value="selectLocation">Please select Location</option>
+              <option v-for="location in locations" :key="location" v-bind:value="location">
+                {{location}}
               </option>
           </select>
-      </fieldset>
-      <fieldset class="my-3">
-        <label for="user-select-area" class="mr-2">Location</label>
-        <select v-model="selectedLocation" @change="onChangeLocation"
-            name="user-select-location" id="user-select-location" tabindex="2">
-            <option selected disabled value="selectLocation">Please select Location</option>
-            <option v-for="location in locations" :key="location" v-bind:value="location">
-              {{location}}
-            </option>
-        </select>
-      </fieldset>
+        </fieldset>
+      </form>
       <div id="clock" class="clock">
           <p class="clock__date">{{ date }}</p>
           <p class="clock__time">{{ time }}</p>
@@ -133,12 +135,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
-#app {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-70%);
+<style lang="scss" scoped>
+.selectTime{
+  width: 550px;
+  margin: 0 auto;
+  max-width: 100%;
 
   fieldset{
     border: none;
@@ -161,6 +162,7 @@ export default {
     margin-left: 30px;
     width: calc(100% - 160px);
   }
+
 }
 
 .clock {
