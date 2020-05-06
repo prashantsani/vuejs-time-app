@@ -34,6 +34,25 @@
 const axios = require('axios');
 const dayjs = require('dayjs');
 
+function handleErrors(error) {
+  let timeStr;
+  let dateStr;
+
+  if (error.toString().indexOf('Network Error')) {
+    // We can set a timer here and call again
+    dateStr = 'Please refersh or try again later';
+    timeStr = 'Network Error!';
+  } else {
+    dateStr = 'Please refersh or try again later';
+    timeStr = 'Error!';
+  }
+
+  return {
+    date: dateStr,
+    time: timeStr,
+  };
+}
+
 export default {
   name: 'TimeApp',
   data() {
@@ -75,7 +94,10 @@ export default {
         this.setAreas(Array.from(this.areaLocationMap.keys()));
       })
       .catch((error) => {
-        console.log(error);
+        const msg = handleErrors(error);
+
+        this.time = msg.time;
+        this.date = msg.date;
       });
   },
   methods: {
@@ -125,7 +147,10 @@ export default {
           this.time = dayjs(response.data.utc_datetime).format('HH:mm:ss');
         })
         .catch((error) => {
-          console.log(error);
+          const msg = handleErrors(error);
+
+          this.time = msg.time;
+          this.date = msg.date;
         });
 
       return false;
