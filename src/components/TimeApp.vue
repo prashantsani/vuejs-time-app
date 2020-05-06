@@ -6,7 +6,7 @@
           <label for="user-select-area" class="mr-2">Area</label>
             <select @change="onChangeArea"
                 name="user-select-area" id="user-select-area" tabindex="1">
-                <option selected disabled value="">Please select Area</option>
+                <option selected disabled value="">{{this.areaPlaceholder}}</option>
                 <option v-for="area in areas" :key="area" v-bind:value="area">
                   {{area}}
                 </option>
@@ -16,7 +16,7 @@
           <label for="user-select-area" class="mr-2">Location</label>
           <select v-model="selectedLocation" @change="onChangeLocation"
               name="user-select-location" id="user-select-location" tabindex="2">
-              <option selected disabled value="selectLocation">Please select Location</option>
+              <option selected disabled value="selectLocation">{{this.locationPlaceholder}}</option>
               <option v-for="location in locations" :key="location" v-bind:value="location">
                 {{location}}
               </option>
@@ -40,10 +40,10 @@ function handleErrors(error) {
 
   if (error.toString().indexOf('Network Error')) {
     // We can set a timer here and call again
-    dateStr = 'Please refersh or try again later';
+    dateStr = 'Please refresh or try again later';
     timeStr = 'Network Error!';
   } else {
-    dateStr = 'Please refersh or try again later';
+    dateStr = 'Please refresh or try again later';
     timeStr = 'Error!';
   }
 
@@ -57,6 +57,8 @@ export default {
   name: 'TimeApp',
   data() {
     return {
+      areaPlaceholder: 'Loading', // This will be shown till all areas/locations are loaded
+      locationPlaceholder: '', // Once all locations are loaded, 'Please Select Area first'
       allLocations: [], // Array of strings (timeZones) recieved via API
       areaLocationMap: new Map(), // Using JavaScript's Map() object to map all Areas/Location
       areas: [], // All Areas Available binded to <select>
@@ -86,6 +88,8 @@ export default {
           }
 
           this.areaLocationMap.get(area).push(location);
+          this.areaPlaceholder = 'Select Area';
+          this.locationPlaceholder = 'Select Location';
 
           return false;
         });
@@ -98,6 +102,7 @@ export default {
 
         this.time = msg.time;
         this.date = msg.date;
+        this.areaPlaceholder = msg.time;
       });
   },
   methods: {
