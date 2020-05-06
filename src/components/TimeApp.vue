@@ -23,16 +23,16 @@
           </select>
         </fieldset>
       </form>
-      <div id="clock" class="clock">
-          <p class="clock__date">{{ date }}</p>
-          <p class="clock__time">{{ time }}</p>
-      </div>
+      <Clock :date=date :time=time />
   </div>
 </template>
 
 <script>
+import Clock from './Clock.vue';
+
 const axios = require('axios');
 const dayjs = require('dayjs');
+
 
 function handleErrors(error) {
   let timeStr;
@@ -145,9 +145,6 @@ export default {
 
       axios.get(url)
         .then((response) => {
-          console.log(response.data);
-          console.log(response.data.utc_datetime);
-
           this.date = dayjs(response.data.utc_datetime).format('DD/MM/YYYY');
           this.time = dayjs(response.data.utc_datetime).format('HH:mm:ss');
         })
@@ -160,6 +157,9 @@ export default {
 
       return false;
     },
+  },
+  components: {
+    Clock,
   },
 };
 </script>
@@ -192,26 +192,5 @@ export default {
     width: calc(100% - 160px);
   }
 
-}
-
-.clock {
-    font-family: 'Share Tech Mono', monospace;
-    color: #ffffff;
-    text-align: center;
-    transform: scale(0.8);
-    color: #daf6ff;
-    text-shadow: 0 0 20px rgba(10, 175, 230, 1),  0 0 20px rgba(10, 175, 230, 0);
-    margin: 10vh auto 0;
-
-    &__time {
-      letter-spacing: 0.05em;
-      font-size: 5.61rem;
-      padding: 5px 0;
-    }
-
-    &__date {
-      letter-spacing: 0.1em;
-      font-size: 1.333rem;
-    }
 }
 </style>
