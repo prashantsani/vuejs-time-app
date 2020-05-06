@@ -32,6 +32,7 @@
 
 <script>
 const axios = require('axios');
+const dayjs = require('dayjs');
 
 export default {
   name: 'TimeApp',
@@ -100,6 +101,7 @@ export default {
       e.preventDefault();
 
       this.time = 'Loading';
+      this.date = 'Loading';
 
       if (e.target.value === '' || e.target.value === 'selectLocation') { return false; }
 
@@ -116,14 +118,11 @@ export default {
 
       axios.get(url)
         .then((response) => {
-          if (typeof response.data !== 'string') {
-            this.time = 'Error ';
-          }
+          console.log(response.data);
+          console.log(response.data.utc_datetime);
 
-          const time = new Date(response.data.utc_datetime).toLocaleString('en-US', { timeZone: this.timeZone });
-
-          this.date = time.substring(0, time.indexOf(', '));
-          this.time = time.substr(time.indexOf(', ')).replace(', ', '');
+          this.date = dayjs(response.data.utc_datetime).format('DD/MM/YYYY');
+          this.time = dayjs(response.data.utc_datetime).format('HH:mm:ss');
         })
         .catch((error) => {
           console.log(error);
