@@ -31,6 +31,8 @@
 </template>
 
 <script>
+const axios = require('axios');
+
 export default {
   name: 'TimeApp',
   data() {
@@ -49,11 +51,9 @@ export default {
     };
   },
   mounted() {
-    console.log('dasjkdas');
-    fetch(this.api)
-      .then((res) => res.json())
+    axios.get(this.api)
       .then((response) => {
-        this.allLocations = response;
+        this.allLocations = response.data;
 
         this.allLocations.map((item) => {
           let area = item.substring(0, item.indexOf('/'));
@@ -72,6 +72,9 @@ export default {
 
         window.abc = this.areaLocationMap;
         this.setAreas(Array.from(this.areaLocationMap.keys()));
+      })
+      .catch((error) => {
+        console.log(error);
       });
   },
   methods: {
@@ -111,16 +114,13 @@ export default {
 
       const url = `${this.api}/${this.timeZone}`;
 
-      fetch(url)
-        .then((res) => res.json())
+      axios.get(url)
         .then((response) => {
-          console.log(response);
-
-          if (typeof response !== 'string') {
+          if (typeof response.data !== 'string') {
             this.time = 'Error ';
           }
 
-          const time = new Date(response.utc_datetime).toLocaleString('en-US', { timeZone: this.timeZone });
+          const time = new Date(response.data.utc_datetime).toLocaleString('en-US', { timeZone: this.timeZone });
 
           this.date = time.substring(0, time.indexOf(', '));
           this.time = time.substr(time.indexOf(', ')).replace(', ', '');
