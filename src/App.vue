@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <p class="text-center">
+      <img alt="Vue logo" src="./assets/logo.png">
+    </p>
     <TimeApp />
   </div>
 </template>
@@ -15,43 +17,39 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+// USE MODULAR SCALE ONLY FOR TYPOGRAPHY
+// https://www.modularscale.com/?1&em&1.333
 
-<style>
+/* Global Styles and Resets */
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+}
+html{
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 html,body {
     height: 100%;
     color: white;
+    overflow: hidden;
+}
+html, body, form, select, input, button, label{
+  font-family: 'Inconsolata', monospace;
 }
 body {
     background: #0f3854;
-    background: radial-gradient(ellipse at center,  #0a2e38  0%, #000000 70%);
+    background: radial-gradient(ellipse at center,  rgba(#0a2e38,0.8) 0%, rgba(#000,0.8) 70%),
+                url(./assets/time-bg-opimised.jpeg) no-repeat;
     background-size: 100%;
     font-size: 16px;
 }
-p {
-    margin: 0;
-    padding: 0;
-}
-fieldset{
-  border: none;
-  outline: none;
-  margin: 30px 0
-}
-label{
-  font-size: 18px;
-  margin-right: 30px;
-}
-select{
-  height: 30px;
-  font-size: 18px;
-}
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.text-center{
   text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-70%);
+}
+h1{
+  font-size: 4.209rem;
 }
 </style>

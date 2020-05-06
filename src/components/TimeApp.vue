@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-      <h1>Time App in VueJS</h1>
+      <h1 class="text-center">Time App in VueJS</h1>
       <fieldset class="my-3">
         <label for="user-select-area" class="mr-2">Area</label>
           <select @change="onChangeArea"
@@ -21,9 +21,9 @@
             </option>
         </select>
       </fieldset>
-      <div id="clock">
-          <p class="date">{{ date }}</p>
-          <p class="time">{{ time }}</p>
+      <div id="clock" class="clock">
+          <p class="clock__date">{{ date }}</p>
+          <p class="clock__time">{{ time }}</p>
       </div>
   </div>
 </template>
@@ -133,28 +133,54 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+#app {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-70%);
 
-#clock {
+  fieldset{
+    border: none;
+    outline: none;
+    margin: 30px 0
+  }
+  label,
+  select{
+    display: inline-block; //Normally I would use a bootstarp/tailwind class here
+    font-size: 1.7rem;
+  }
+
+  label{
+    width: 130px;
+    text-align: right;
+  }
+
+  select{
+    height: 40px;
+    margin-left: 30px;
+    width: calc(100% - 160px);
+  }
+}
+
+.clock {
     font-family: 'Share Tech Mono', monospace;
     color: #ffffff;
     text-align: center;
     transform: scale(0.8);
     color: #daf6ff;
     text-shadow: 0 0 20px rgba(10, 175, 230, 1),  0 0 20px rgba(10, 175, 230, 0);
+    margin: 10vh auto 0;
+
+    &__time {
+      letter-spacing: 0.05em;
+      font-size: 5.61rem;
+      padding: 5px 0;
+    }
+
+    &__date {
+      letter-spacing: 0.1em;
+      font-size: 1.333rem;
+    }
 }
-#clock .time {
-        letter-spacing: 0.05em;
-        font-size: 80px;
-        padding: 5px 0;
-    }
-#clock    .date {
-        letter-spacing: 0.1em;
-        font-size: 24px;
-    }
-#clock    .text {
-        letter-spacing: 0.1em;
-        font-size: 12px;
-        padding: 20px 0 0;
-    }
 </style>
