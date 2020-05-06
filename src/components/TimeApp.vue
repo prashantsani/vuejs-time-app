@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-      <h1 class="text-center">Time App in VueJS</h1>
+      <h1 class="text-center">🌍 World Clock ⏱</h1>
       <form @submit="() => { return false }" class="selectTime">
         <fieldset class="my-3">
           <label for="user-select-area" class="mr-2">Area</label>
