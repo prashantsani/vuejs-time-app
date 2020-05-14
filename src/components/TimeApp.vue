@@ -132,8 +132,10 @@ export default {
 
         axios.get(url)
           .then((response) => {
-            this.date = dayjs(response.data.utc_datetime).format('DD/MM/YYYY');
-            this.time = dayjs(response.data.utc_datetime).format('HH:mm:ss');
+            const dt = new Date(response.data.utc_datetime).toLocaleString('en-US', { timeZone: this.timeZone });
+            this.date = dayjs(dt).format('DD/MM/YYYY');
+            this.time = dayjs(dt).format('HH:mm:ss');
+            console.log(response.data);
           })
           .catch((error) => {
             const msg = handleErrors(error);

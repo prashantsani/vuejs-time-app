@@ -8,7 +8,16 @@
 <script>
 export default {
   name: 'Clock',
-  props: ['date', 'time'],
+  props: {
+    date: {
+      type: String,
+      default: '',
+    },
+    time: {
+      type: String,
+      default: '00:00:00',
+    },
+  },
 };
 </script>
 
