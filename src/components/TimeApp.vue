@@ -4,7 +4,7 @@
       <form @submit.prevent class="selectTime"><!-- Form submit will not reload the page -->
         <fieldset class="my-3">
           <label for="user-select-area" class="mr-2">Area</label>
-            <select @change="onChangeArea"
+            <select @change.prevent="onChangeArea"
                 name="user-select-area" id="user-select-area" tabindex="1">
                 <option selected disabled value="">{{this.areaPlaceholder}}</option>
                 <option v-for="area in areas" :key="area" v-bind:value="area">
@@ -14,7 +14,7 @@
         </fieldset>
         <fieldset class="my-3">
           <label for="user-select-area" class="mr-2">Location</label>
-          <select v-model="selectedLocation" @change="onChangeLocation"
+          <select v-model="selectedLocation" @change.prevent="onChangeLocation"
               name="user-select-location" id="user-select-location" tabindex="2">
               <option selected disabled value="selectLocation">{{this.locationPlaceholder}}</option>
               <option v-for="location in locations" :key="location" v-bind:value="location">
@@ -116,37 +116,32 @@ export default {
       this.selectedArea = selectedArea;
     },
     onChangeLocation(e) {
-      e.preventDefault();
-
       this.time = 'Loading';
       this.date = 'Loading';
+      if ((e.target.value !== '') && (e.target.value !== 'selectLocation')) {
+        const location = e.target.value;
+        this.selectedLocation = location;
+        this.timeZone = (() => {
+          if (this.selectedLocation === this.selectedArea) {
+            return `${this.selectedArea}`;
+          }
+          return `${this.selectedArea}/${this.selectedLocation}`;
+        })();
 
-      if (e.target.value === '' || e.target.value === 'selectLocation') { return false; }
+        const url = `${this.api}/${this.timeZone}`;
 
-      const location = e.target.value;
-      this.selectedLocation = location;
-      this.timeZone = (() => {
-        if (this.selectedLocation === this.selectedArea) {
-          return `${this.selectedArea}`;
-        }
-        return `${this.selectedArea}/${this.selectedLocation}`;
-      })();
+        axios.get(url)
+          .then((response) => {
+            this.date = dayjs(response.data.utc_datetime).format('DD/MM/YYYY');
+            this.time = dayjs(response.data.utc_datetime).format('HH:mm:ss');
+          })
+          .catch((error) => {
+            const msg = handleErrors(error);
 
-      const url = `${this.api}/${this.timeZone}`;
-
-      axios.get(url)
-        .then((response) => {
-          this.date = dayjs(response.data.utc_datetime).format('DD/MM/YYYY');
-          this.time = dayjs(response.data.utc_datetime).format('HH:mm:ss');
-        })
-        .catch((error) => {
-          const msg = handleErrors(error);
-
-          this.time = msg.time;
-          this.date = msg.date;
-        });
-
-      return false;
+            this.time = msg.time;
+            this.date = msg.date;
+          });
+      }
     },
   },
   components: {
