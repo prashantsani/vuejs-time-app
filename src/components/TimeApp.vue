@@ -93,8 +93,6 @@ export default {
 
           return false;
         });
-
-        window.abc = this.areaLocationMap;
         this.setAreas(Array.from(this.areaLocationMap.keys()));
       })
       .catch((error) => {
