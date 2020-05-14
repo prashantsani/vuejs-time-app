@@ -1,7 +1,7 @@
 <template>
-  <div class="hello">
+  <div>
       <h1 class="text-center">🌍 World Clock ⏱</h1>
-      <form @submit.prevent class="selectTime"><!-- Form submit will not reload the page -->
+      <form @submit.prevent class="select-time"><!-- Form submit will not reload the page -->
         <fieldset class="my-3">
           <label for="user-select-area" class="mr-2">Area</label>
             <select @change.prevent="onChangeArea"
@@ -153,10 +153,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.selectTime{
+.select-time{
   width: 550px;
   margin: 0 auto;
-  max-width: 100%;
+  max-width: 80%;
 
   fieldset{
     border: none;
@@ -179,6 +179,28 @@ export default {
     margin-left: 30px;
     width: calc(100% - 160px);
   }
+}
 
+@media screen and (max-height: 700px) {
+  .select-time{
+    select{
+      height: 6vh;
+    }
+  }
+}
+
+@media screen and (max-width: 770px) {
+  .select-time{
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    label{
+      display: none;
+    }
+    select{
+      width: 100%;
+      margin-left: 0;
+    }
+  }
 }
 </style>

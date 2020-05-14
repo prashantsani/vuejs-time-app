@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <p class="text-center">
-      <img alt="Vue logo" src="./assets/logo.png">
+      <img alt="Vue logo" src="./assets/logo.png" class="vue-logo">
     </p>
     <TimeApp />
   </div>
@@ -30,6 +30,7 @@ export default {
 html{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
 }
 html,body {
     height: 100%;
@@ -44,7 +45,6 @@ body {
     background: radial-gradient(ellipse at center,  rgba(#0a2e38,0.8) 0%, rgba(#000,0.8) 70%),
                 url(./assets/time-bg-opimised.jpeg) no-repeat;
     background-size: cover;
-    font-size: 16px;
 }
 .text-center{
   text-align: center;
@@ -56,6 +56,32 @@ h1{
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-70%);
+  transform: translate(-50%, -70%);
+}
+@media screen and (max-height: 900px) {
+  #app{
+    transform: translate(-50%, -50%);
+  }
+}
+@media screen and (max-width: 770px) {
+  html{
+    font-size: 2vw;
+  }
+  #app{
+    transform: translate(0, -50%);
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+}
+@media screen and (max-height: 700px) {
+  html{
+    font-size: 2vh;
+  }
+  .vue-logo{
+    height: 10vh;
+    width: auto;
+  }
 }
 </style>
