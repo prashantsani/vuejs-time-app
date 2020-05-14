@@ -110,13 +110,6 @@ export default {
     setAreas(value) {
       this.areas = value;
     },
-    zeroPadding(num, digit) {
-      let zero = '';
-      for (let i = 0; i < digit; i += 1) {
-        zero += '0';
-      }
-      return (zero + num).slice(-digit);
-    },
     onChangeArea(e) {
       const selectedArea = e.target.value;
       this.locations = Array.from(this.areaLocationMap.get(selectedArea));
