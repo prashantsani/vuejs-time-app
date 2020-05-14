@@ -23,7 +23,7 @@
           </select>
         </fieldset>
       </form>
-      <Clock :date=date :time=time />
+      <Clock :date="date" :time="time" />
   </div>
 </template>
 

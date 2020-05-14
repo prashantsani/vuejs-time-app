@@ -43,7 +43,7 @@ body {
     background: #0f3854;
     background: radial-gradient(ellipse at center,  rgba(#0a2e38,0.8) 0%, rgba(#000,0.8) 70%),
                 url(./assets/time-bg-opimised.jpeg) no-repeat;
-    background-size: 100%;
+    background-size: cover;
     font-size: 16px;
 }
 .text-center{
