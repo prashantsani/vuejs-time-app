@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
       <h1 class="text-center">🌍 World Clock ⏱</h1>
-      <form @submit="() => { return false }" class="selectTime">
+      <form @submit.prevent class="selectTime"><!-- Form submit will not reload the page -->
         <fieldset class="my-3">
           <label for="user-select-area" class="mr-2">Area</label>
             <select @change="onChangeArea"
