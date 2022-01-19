@@ -69,7 +69,7 @@ export default {
       date: 'Please', // The Date shown inside <p>
       week: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'], // All available Days of Week
       timeZone: '', // Not Local Machine TimeZone
-      api: 'http://worldtimeapi.org/api/timezone',
+      api: 'https://worldtimeapi.org/api/timezone',
     };
   },
   mounted() {
